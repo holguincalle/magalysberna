@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+
+  <link rel="icon" href="data:,">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background-color: #f4f6f9; color: #333; padding-bottom: 40px; }
+    
+    header { background-color: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    header a { color: #3498db; text-decoration: none; font-weight: bold; }
+
+    .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
+
+    #pantalla-login { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
+    #pantalla-login h3 { margin-bottom: 20px; color: #2c3e50; }
+    #pantalla-login input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 1rem; }
+    #pantalla-login button { width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    #mensaje-error { color: #e74c3c; font-size: 0.9rem; margin-top: 10px; display: none; }
+
+    #contenido-admin { display: none; }
+
+    .form-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 30px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    
+    /* CONTENEDOR CHECKBOX CATEGORÍAS */
+    .checkbox-cat-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; max-height: 140px; overflow-y: auto; }
+    .checkbox-item { display: flex; align-items: center; gap: 5px; background: white; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; font-size: 0.9rem; }
+    .checkbox-item input { width: auto; }
+
+    .row-inline { display: flex; gap: 10px; align-items: center; margin-top: 5px; }
+
+    .btn-guardar { background-color: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn-cancelar { background-color: #95a5a6; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 10px; }
+    .btn-cerrar { background-color: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+    .btn-secundario { background-color: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+    .barra-busqueda-admin { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+    .barra-busqueda-admin input { flex-grow: 1; min-width: 200px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; }
+    .barra-busqueda-admin select { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; background: white; }
+
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #34495e; color: white; }
+    .img-tabla { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+    .btn-editar { background-color: #f39c12; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+    .btn-eliminar { background-color: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
+
+    .badge-cat { background: #e0e0e0; padding: 3px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin: 2px; }
+
+    .acciones-json { margin-top: 20px; padding: 20px; background: #e8f4f8; border: 1px solid #bce8f1; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; }
+    .btn-exportar-github { background-color: #27ae60; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem; text-align: center; }
+    .btn-json { background-color: #34495e; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <div id="pantalla-login">
+    <h3>Acceso Restringido</h3>
+    <form onsubmit="validarClave(event)">
+      <input type="password" id="input-clave" placeholder="Ingresa la contraseña" required autofocus>
+      <button type="submit">Ingresar</button>
+    </form>
+    <p id="mensaje-error">Contraseña incorrecta</p>
+  </div>
+
+  <div id="contenido-admin">
+    <header>
+      <h2>Panel de Administración</h2>
+      <div>
+        <a href="index.html" target="_blank" style="margin-right: 15px;">Ver tienda ↗</a>
+        <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+      </div>
+    </header>
+
+    <div class="container">
+      
+      <!-- FORMULARIO DE PRODUCTO -->
+      <div class="form-container">
+        <h3 id="form-titulo">Agregar Producto</h3>
+        <form id="form-producto" onsubmit="guardarProducto(event)">
+          <input type="hidden" id="prod-id">
+          
+          <div class="form-group">
+            <label>Nombre del Producto</label>
+            <input type="text" id="prod-nombre" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Categorías (Puedes seleccionar varias)</label>
+            <div id="container-checkbox-cat" class="checkbox-cat-container"></div>
+            <div class="row-inline">
+              <button type="button" class="btn-secundario" onclick="nuevaCategoria()">+ Crear Nueva Categoría</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Precio ($)</label>
+            <input type="number" id="prod-precio" required>
+          </div>
+          
+          <div class="form-group">
+            <label>URL Imagen Principal</label>
+            <input type="url" id="prod-imagen" placeholder="https://ejemplo.com/foto1.jpg" required>
+          </div>
+
+          <div class="form-group">
+            <label>URLs Imágenes Adicionales para Carrusel (Opcional - separadas por comas)</label>
+            <textarea id="prod-imagenes-extra" rows="2" placeholder="https://ejemplo.com/foto2.jpg, https://ejemplo.com/foto3.jpg"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea id="prod-desc" rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn-guardar">Guardar Producto Localmente</button>
+          <button type="button" class="btn-cancelar" onclick="limpiarFormulario()">Cancelar</button>
+        </form>
+      </div>
+
+      <h3>Inventario de Productos</h3>
+
+      <!-- BARRA DE BÚSQUEDA Y FILTRADO -->
+      <div class="barra-busqueda-admin">
+        <input type="text" id="buscar-admin" placeholder="🔍 Buscar por nombre..." oninput="filtrarTablaAdmin()">
+        <select id="filtrar-cat-admin" onchange="filtrarTablaAdmin()">
+          <option value="Todas">Todas las Categorías</option>
+        </select>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Categorías</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body"></tbody>
+      </table>
+
+      <!-- ACCIONES PARA GITHUB -->
+      <div class="acciones-json">
+        <h4>Sincronización con GitHub Pages</h4>
+        <p style="font-size: 0.9rem; color: #555;">Descarga este archivo y reemplázalo en tu repositorio para publicar los cambios.</p>
+        <button class="btn-exportar-github" onclick="descargarParaGitHub()">📥 Descargar productos.json actualizado</button>
+        
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <label class="btn-json" style="cursor: pointer;">
+            Cargar otro productos.json
+            <input type="file" accept=".json" onchange="importarJSON(event)" style="display: none;">
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const CLAVE_CORRECTA = "1234";
+
+    let productos = [];
+    let categorias = ["Rostro", "Cabello", "Corporal", "Maquillaje", "Labios"];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('admin_autenticado') === 'true') {
+        mostrarAdmin();
+      }
+    });
+
+    function validarClave(e) {
+      e.preventDefault();
+      const claveIngresada = document.getElementById('input-clave').value;
+      const errorMsg = document.getElementById('mensaje-error');
+
+      if (claveIngresada === CLAVE_CORRECTA) {
+        sessionStorage.setItem('admin_autenticado', 'true');
+        errorMsg.style.display = 'none';
+        mostrarAdmin();
+      } else {
+        errorMsg.style.display = 'block';
+        document.getElementById('input-clave').value = '';
+      }
+    }
+
+    async function mostrarAdmin() {
+      document.getElementById('pantalla-login').style.display = 'none';
+      document.getElementById('contenido-admin').style.display = 'block';
+      
+      try {
+        const respuesta = await fetch('productos.json?cache=' + Date.now());
+        if (respuesta.ok) {
+          const data = await respuesta.json();
+          productos = data.productos || [];
+          categorias = data.categorias || categorias;
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        productos = JSON.parse(localStorage.getItem('productos_db')) || [];
+        categorias = JSON.parse(localStorage.getItem('categorias_db')) || categorias;
+      }
+
+      cargarUICategorias();
+      renderizarTabla();
+    }
+
+    function cerrarSesion() {
+      sessionStorage.removeItem('admin_autenticado');
+      window.location.reload();
+    }
+
+    function guardarEnStorage() {
+      localStorage.setItem('productos_db', JSON.stringify(productos));
+      localStorage.setItem('categorias_db', JSON.stringify(categorias));
+    }
+
+    function cargarUICategorias() {
+      // 1. Checkboxes en el formulario
+      const containerCheckbox = document.getElementById('container-checkbox-cat');
+      containerCheckbox.innerHTML = '';
+      categorias.forEach(cat => {
+        containerCheckbox.innerHTML += `
+          <label class="checkbox-item">
+            <input type="checkbox" value="${cat}" class="chk-categoria">
+            ${cat}
+          </label>
+        `;
+      });
+
+      // 2. Desplegable de filtro de tabla
+      const selectFiltro = document.getElementById('filtrar-cat-admin');
+      selectFiltro.innerHTML = '<option value="Todas">Todas las Categorías</option>';
+      categorias.forEach(cat => {
+        selectFiltro.innerHTML += `<option value="${cat}">${cat}</option>`;
+      });
+    }
+
+    function nuevaCategoria() {
+      const nombreCat = prompt("Ingresa el nombre de la nueva categoría:");
+      if (nombreCat && nombreCat.trim() !== "") {
+        const catLimpia = nombreCat.trim();
+        if (!categorias.includes(catLimpia)) {
+          categorias.push(catLimpia);
+          guardarEnStorage();
+          cargarUICategorias();
+        } else {
+          alert("Esa categoría ya existe.");
+        }
+      }
+    }
+
+    function renderizarTabla(listaProductos = productos) {
+      const tbody = document.getElementById('tabla-body');
+      tbody.innerHTML = listaProductos.length === 0 ? '<tr><td colspan="5">No se encontraron productos</td></tr>' : '';
+
+      listaProductos.forEach(p => {
+        const catsArray = Array.isArray(p.categorias) ? p.categorias : (p.categoria ? [p.categoria] : ['Sin categoría']);
+        const badgesHtml = catsArray.map(c => `<span class="badge-cat">${c}</span>`).join('');
+
+        tbody.innerHTML += `
+          <tr>
+            <td><img src="${p.imagen}" class="img-tabla" onerror="this.src='https://via.placeholder.com/50'"></td>
+            <td>${p.nombre}</td>
+            <td>${badgesHtml}</td>
+            <td>$${Number(p.precio).toLocaleString()}</td>
+            <td>
+              <button class="btn-editar" onclick="cargarParaEditar(${p.id})">Editar</button>
+              <button class="btn-eliminar" onclick="eliminarProducto(${p.id})">Borrar</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function filtrarTablaAdmin() {
+      const textoBusqueda = document.getElementById('buscar-admin').value.toLowerCase().trim();
+      const categoriaFiltro = document.getElementById('filtrar-cat-admin').value;
+
+      const resultados = productos.filter(p => {
+        const coincideNombre = p.nombre.toLowerCase().includes(textoBusqueda);
+        const catsArray = Array.isArray(p.categorias) ? p.categorias : [p.categoria];
+        const coincideCat = (categoriaFiltro === "Todas") || catsArray.includes(categoriaFiltro);
+        return coincideNombre && coincideCat;
+      });
+
+      renderizarTabla(resultados);
+    }
+
+    function guardarProducto(e) {
+      e.preventDefault();
+      const id = document.getElementById('prod-id').value;
+      const nombre = document.getElementById('prod-nombre').value;
+      
+      // Obtener todas las categorías seleccionadas
+      const seleccionadas = Array.from(document.querySelectorAll('.chk-categoria:checked')).map(cb => cb.value);
+      if (seleccionadas.length === 0) {
+        alert("Por favor selecciona al menos una categoría.");
+        return;
+      }
+
+      const precio = Number(document.getElementById('prod-precio').value);
+      const imagenPrincipal = document.getElementById('prod-imagen').value.trim();
+      const extraTexto = document.getElementById('prod-imagenes-extra').value.trim();
+      const desc = document.getElementById('prod-desc').value;
+
+      // Procesar array de imágenes para el carrusel
+      let listaImagenes = [imagenPrincipal];
+      if (extraTexto) {
+        const extras = extraTexto.split(',').map(url => url.trim()).filter(url => url.length > 0);
+        extras.forEach(url => { if (!listaImagenes.includes(url)) listaImagenes.push(url); });
+      }
+
+      const productoData = {
+        id: id ? Number(id) : Date.now(),
+        nombre,
+        categoria: seleccionadas[0], // Compatibilidad hacia atrás
+        categorias: seleccionadas,   // Array de multicategorías
+        precio,
+        imagen: imagenPrincipal,
+        imagenes: listaImagenes,      // Array de imágenes para el carrusel
+        desc
+      };
+
+      if (id) {
+        const index = productos.findIndex(p => p.id == id);
+        productos[index] = productoData;
+      } else {
+        productos.push(productoData);
+      }
+
+      guardarEnStorage();
+      limpiarFormulario();
+      filtrarTablaAdmin();
+    }
+
+    function cargarParaEditar(id) {
+      const p = productos.find(prod => prod.id === id);
+      if (!p) return;
+      
+      document.getElementById('prod-id').value = p.id;
+      document.getElementById('prod-nombre').value = p.nombre;
+      document.getElementById('prod-precio').value = p.precio;
+      document.getElementById('prod-imagen').value = p.imagen;
+      document.getElementById('prod-desc').value = p.desc || '';
+
+      // Cargar checkboxes
+      const catsArray = Array.isArray(p.categorias) ? p.categorias : [p.categoria];
+      document.querySelectorAll('.chk-categoria').forEach(cb => {
+        cb.checked = catsArray.includes(cb.value);
+      });
+
+      // Cargar imágenes extras en el textarea
+      if (Array.isArray(p.imagenes) && p.imagenes.length > 1) {
+        const extras = p.imagenes.slice(1);
+        document.getElementById('prod-imagenes-extra').value = extras.join(', ');
+      } else {
+        document.getElementById('prod-imagenes-extra').value = '';
+      }
+
+      document.getElementById('form-titulo').innerText = "Editar Producto";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function eliminarProducto(id) {
+      if (confirm("¿Seguro que deseas eliminar este producto?")) {
+        productos = productos.filter(p => p.id !== id);
+        guardarEnStorage();
+        filtrarTablaAdmin();
+      }
+    }
+
+    function limpiarFormulario() {
+      document.getElementById('form-producto').reset();
+      document.getElementById('prod-id').value = '';
+      document.querySelectorAll('.chk-categoria').forEach(cb => cb.checked = false);
+      document.getElementById('form-titulo').innerText = "Agregar Producto";
+    }
+
+    function descargarParaGitHub() {
+      const data = { categorias, productos };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const anchor = document.createElement('a');
+      anchor.setAttribute("href", dataStr);
+      anchor.setAttribute("download", "productos.json");
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+    }
+
+    function importarJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (Array.isArray(parsed)) {
+            productos = parsed;
+          } else if (parsed.productos && parsed.categorias) {
+            productos = parsed.productos;
+            categorias = parsed.categorias;
+          }
+          guardarEnStorage();
+          cargarUICategorias();
+          filtrarTablaAdmin();
+          alert("¡Catálogo cargado en memoria!");
+        } catch (err) {
+          alert("Error al leer el archivo JSON.");
+        }
+      };
+      reader.readAsText(file);
+    }
+  </script>
+</body>
+</html>

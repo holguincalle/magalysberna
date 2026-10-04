@@ -1,0 +1,66 @@
+{
+  "categorias": [
+    "Rostro",
+    "Cabello",
+    "Corporal",
+    "Maquillaje",
+    "CUIDADO FACIAL",
+    "LABIOS",
+    "cuidado capilar"
+  ],
+  "productos": [
+    {
+      "id": 1791075016395,
+      "nombre": "corrector lula negro",
+      "categoria": "Corporal",
+      "precio": 35000,
+      "imagen": "https://lulabeauty.co/cdn/shop/files/01_10_9578bd34-d67f-4a55-8c42-770659b2ae91.png?v=1736433402&width=3000",
+      "desc": "descripsao"
+    },
+    {
+      "id": 1791075230117,
+      "nombre": "labial",
+      "categoria": "Rostro",
+      "precio": 5612,
+      "imagen": "https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000, https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000, https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000 ,https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000",
+      "desc": "descripcion completa del producto"
+    },
+    {
+      "id": 1791078672483,
+      "nombre": "BALSAMO PARA LABIOS GUZEL",
+      "categoria": "CUIDADO FACIAL",
+      "categorias": [
+        "CUIDADO FACIAL",
+        "LABIOS"
+      ],
+      "precio": 5000,
+      "imagen": "https://guzelcosmetics.com/cdn/shop/files/D13BA935-9671-458D-94D4-A33F50A7EF3E.png?v=1781587744&width=1200",
+      "imagenes": [
+        "https://guzelcosmetics.com/cdn/shop/files/D13BA935-9671-458D-94D4-A33F50A7EF3E.png?v=1781587744&width=1200",
+        "https://guzelcosmetics.com/cdn/shop/files/911B4156-C930-402B-983D-ECA46FABDCC4.png?v=1781587744&width=1200",
+        "https://guzelcosmetics.com/cdn/shop/files/IMG-4310.png?v=1781639354&width=1200",
+        "https://guzelcosmetics.com/cdn/shop/files/376DF4AD-A3E1-4CC2-8618-583647B1F02A.png?v=1781587744&width=1200",
+        "https://guzelcosmetics.com/cdn/shop/files/6D592ABB-781D-4959-907D-CC14283F1116.png?v=1781587744&width=1200"
+      ],
+      "desc": "Bálsamo hidratante diseñado para nutrir, suavizar y proteger los labios, aportando un brillo natural y una sensación de confort durante todo el día."
+    },
+    {
+      "id": 1791079677216,
+      "nombre": "shampoo de miel click hair 200ml",
+      "categoria": "Cabello",
+      "categorias": [
+        "Cabello",
+        "cuidado capilar"
+      ],
+      "precio": 45900,
+      "imagen": "https://clickhair.com.co/cdn/shop/files/Diseno_sin_titulo_40.png?v=1741028397&width=1800",
+      "imagenes": [
+        "https://clickhair.com.co/cdn/shop/files/Diseno_sin_titulo_40.png?v=1741028397&width=1800",
+        "https://clickhair.com.co/cdn/shop/files/Diseno_sin_titulo_33.png?v=1741028397&width=1800",
+        "https://clickhair.com.co/cdn/shop/files/Beneficios_linea_mieL_X4-02.jpg?v=1741028397&width=1080",
+        "https://clickhair.com.co/cdn/shop/files/WhatsApp_Image_2025-02-11_at_08.22.58.jpg?v=1741028397&width=1800"
+      ],
+      "desc": "El Shampoo de Miel Brillo Intenso de Click Hair ofrece limpieza suave y brillo intenso. Limpia el cabello sin resecar y ayuda a devolverle la hidratación, suavidad y luminosidad al cabello maltratado, opaco o tratado químicamente."
+    }
+  ]
+}
