@@ -3,35 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Tienda Online</title>
+  <title>Mi Tienda Online | Cosméticos & Cuidado Personal</title>
+
+  <!-- ETIQUETAS OPEN GRAPH PARA VISTA PREVIA BONITA EN WHATSAPP Y REDES -->
+  <meta property="og:title" content="Mi Tienda Online | Cosméticos & Cuidado Personal">
+  <meta property="og:description" content="Descubre nuestro catálogo de productos de belleza, cuidado facial y corporal. Haz tu pedido directo por WhatsApp.">
+  <meta property="og:image" content="https://via.placeholder.com/600x315/1a252f/ffffff?text=Mi+Tienda+Online">
+  <meta property="og:type" content="website">
 
   <link rel="icon" href="data:,">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f4f6f9; color: #333; padding-bottom: 80px; }
+    body { background-color: #f4f6f9; color: #333; padding-bottom: 60px; }
     
-    header { background-color: #1a252f; color: white; padding: 1.5rem 2rem; text-align: center; }
+    header { background-color: #1a252f; color: white; padding: 1.2rem 2rem; text-align: center; }
 
-    .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
+    /* CONTENEDOR FIJO (STICKY) PARA BÚSQUEDA Y CATEGORÍAS */
+    .sticky-header-container {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background-color: #f4f6f9;
+      padding: 15px 20px 5px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
     
     /* BARRA DE BÚSQUEDA Y FILTROS */
-    .tienda-busqueda-container { margin-bottom: 20px; }
+    .tienda-busqueda-container { margin-bottom: 12px; }
     .input-busqueda-tienda { width: 100%; padding: 12px 16px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); outline: none; }
     .input-busqueda-tienda:focus { border-color: #3498db; }
 
-    .filtros-categorias { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 25px; }
+    .filtros-categorias { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; }
     .btn-cat-filtro { background: white; border: 1px solid #ccc; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
     .btn-cat-filtro.activo { background-color: #3498db; color: white; border-color: #3498db; }
 
     /* SECCIONES Y GRID */
-    .seccion-categoria { margin-bottom: 35px; }
+    .seccion-categoria { margin-bottom: 35px; margin-top: 20px; }
     .titulo-categoria { font-size: 1.4rem; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-bottom: 15px; text-transform: capitalize; }
 
     .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-    .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
     .card:hover { transform: translateY(-4px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
     .card img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+    
+    /* INSIGNIA DE AGOTADO */
+    .badge-agotado { position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; font-weight: bold; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; text-transform: uppercase; z-index: 2; }
+    .card.agotado-card img { filter: grayscale(80%); opacity: 0.7; }
+
     .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
     .card-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; }
     .card-price { color: #27ae60; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
@@ -39,6 +60,7 @@
     
     .btn-agregar { background-color: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
     .btn-agregar:hover { background-color: #2980b9; }
+    .btn-agregar.btn-deshabilitado { background-color: #bdc3c7; cursor: not-allowed; }
 
     /* BOTÓN FLOTANTE DEL CARRITO */
     .cart-float-btn { position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 99; display: flex; align-items: center; gap: 8px; }
@@ -49,7 +71,7 @@
     .btn-ir-arriba.visible { opacity: 1; visibility: visible; }
     .btn-ir-arriba:hover { background-color: #1a252f; }
 
-    /* ESTRUCTURA GENERAL Y ANIMACIONES DE MODALES */
+    /* MODALES */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 100; padding: 15px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
     .modal-overlay.activo { opacity: 1; visibility: visible; }
 
@@ -59,7 +81,7 @@
     .btn-cerrar-modal { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #888; transition: color 0.2s; }
     .btn-cerrar-modal:hover { color: #333; }
 
-    /* MODAL DETALLE DEL PRODUCTO (AMPLIADO A 1050PX) */
+    /* MODAL DETALLE DEL PRODUCTO */
     .modal-detalle { background: white; width: 95%; max-width: 1050px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.3); max-height: 90vh; display: flex; flex-direction: column; }
     .detalle-body { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 35px; padding: 30px; overflow-y: auto; }
     @media (max-width: 800px) { .detalle-body { grid-template-columns: 1fr; gap: 20px; padding: 20px; } }
@@ -75,7 +97,11 @@
     .detalle-titulo { font-size: 1.8rem; color: #2c3e50; margin-bottom: 8px; font-weight: bold; }
     .detalle-categoria { font-size: 0.85rem; color: #3498db; font-weight: bold; text-transform: uppercase; margin-bottom: 12px; }
     .detalle-precio { font-size: 2rem; color: #27ae60; font-weight: bold; margin-bottom: 18px; }
-    .detalle-desc { font-size: 1.05rem; color: #444; line-height: 1.6; margin-bottom: 25px; white-space: pre-line; }
+    .detalle-desc { font-size: 1.05rem; color: #444; line-height: 1.6; margin-bottom: 20px; white-space: pre-line; }
+
+    .contenedor-variante { margin-bottom: 20px; display: none; }
+    .contenedor-variante label { font-weight: bold; display: block; margin-bottom: 6px; color: #2c3e50; }
+    .select-variante { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; background: #fff; outline: none; }
 
     .selector-cantidad { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
     .selector-cantidad label { font-weight: bold; font-size: 1rem; }
@@ -84,7 +110,7 @@
     .btn-qty-modal:hover { background: #e0e0e0; }
     .input-qty-modal { width: 50px; height: 40px; border: none; text-align: center; font-weight: bold; font-size: 1.1rem; outline: none; }
 
-    /* MODAL OPCIONES ACCIÓN POST-AGREGAR */
+    /* MODAL CONFIRMACIÓN POST-AGREGAR */
     .modal-confirmacion { background: white; padding: 25px; border-radius: 10px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
     .modal-confirmacion h4 { color: #2c3e50; margin-bottom: 10px; font-size: 1.2rem; }
     .modal-confirmacion p { color: #666; font-size: 0.95rem; margin-bottom: 20px; }
@@ -92,7 +118,7 @@
     .btn-seguir { flex: 1; background: #e0e0e0; color: #333; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
     .btn-ir-carrito { flex: 1; background: #25d366; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-    /* MODAL CARRITO PRINCIPAL CON IMÁGENES */
+    /* MODAL CARRITO PRINCIPAL */
     .cart-modal { background: white; width: 100%; max-width: 520px; border-radius: 8px; padding: 20px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
     
@@ -101,6 +127,7 @@
     .cart-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; background: #eee; flex-shrink: 0; }
     .cart-item-info { flex-grow: 1; }
     .cart-item-title { font-weight: bold; font-size: 0.95rem; }
+    .cart-item-variante { font-size: 0.8rem; color: #3498db; font-weight: bold; }
     .cart-item-price { color: #27ae60; font-size: 0.9rem; }
     
     .cart-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
@@ -114,26 +141,57 @@
     .form-group-cart label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 3px; }
     .form-group-cart input, .form-group-cart select, .form-group-cart textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
 
-    .cart-footer { border-top: 1px solid #eee; padding-top: 15px; }
-    .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+    .cart-subtotal-row { display: flex; justify-content: space-between; font-size: 0.95rem; color: #555; margin-bottom: 5px; }
+    .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 10px; }
     .btn-pedir-ws { display: block; width: 100%; background-color: #25d366; color: white; text-align: center; padding: 12px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1rem; border: none; cursor: pointer; }
     .btn-pedir-ws:hover { background-color: #20ba5a; }
+
+    /* SECCIÓN LANDING: CONTACTO Y UBICACIÓN */
+    .seccion-nosotros { background: white; border-radius: 12px; padding: 30px; margin: 40px auto 20px auto; max-width: 1100px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .nosotros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    @media (max-width: 768px) { .nosotros-grid { grid-template-columns: 1fr; } }
+    .nosotros-info h3 { color: #2c3e50; font-size: 1.4rem; margin-bottom: 12px; }
+    .nosotros-info p { color: #555; line-height: 1.6; margin-bottom: 15px; font-size: 0.95rem; }
+    .nosotros-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #444; font-weight: 500; }
   </style>
 </head>
 <body>
 
   <header>
     <h1>Mi Tienda Online</h1>
+    <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 4px;">Cosméticos & Cuidado Personal • Medellín</p>
   </header>
 
-  <div class="container">
-    <div class="tienda-busqueda-container">
-      <input type="text" id="input-buscar-tienda" class="input-busqueda-tienda" placeholder="🔍 Buscar productos por nombre..." oninput="renderizarTienda()">
+  <!-- CONTENEDOR FIJO PARA BÚSQUEDA Y CATEGORÍAS -->
+  <div class="sticky-header-container">
+    <div class="container">
+      <div class="tienda-busqueda-container">
+        <input type="text" id="input-buscar-tienda" class="input-busqueda-tienda" placeholder="🔍 Buscar productos por nombre..." oninput="renderizarTienda()">
+      </div>
+      <div id="bar-categorias" class="filtros-categorias"></div>
     </div>
+  </div>
 
-    <div id="bar-categorias" class="filtros-categorias"></div>
-
+  <div class="container">
     <div id="catalogo-contenido">Cargando productos...</div>
+
+    <!-- SECCIÓN LANDING: QUIÉNES SOMOS / UBICACIÓN / ENVÍOS -->
+    <div class="seccion-nosotros">
+      <div class="nosotros-grid">
+        <div class="nosotros-info">
+          <h3>Sobre Nuestra Tienda ✨</h3>
+          <p>Somos una tienda online de cosméticos y belleza enfocada en brindarte la mejor experiencia y productos seleccionados de alta calidad para resaltar tu cuidado personal.</p>
+          <div class="nosotros-item">📍 <span><strong>Ubicación:</strong> Medellín, Antioquia (Envíos locales y nacionales)</span></div>
+          <div class="nosotros-item">📲 <span><strong>Atención WhatsApp:</strong> +57 304 3511345</span></div>
+          <div class="nosotros-item">💳 <span><strong>Pagos:</strong> Nequi, Daviplata, Efectivo y Transferencia</span></div>
+        </div>
+        <div class="nosotros-info">
+          <h3>Envíos y Entregas 🛵</h3>
+          <p>Realizamos domicilios contra entrega o despacho previo en Medellín, Envigado, Itagüí, Sabaneta, Bello y demás municipios del Valle de Aburrá. También hacemos despachos garantizados a todo el país.</p>
+          <p><em>¿Tienes dudas con un producto? Escríbenos directamente y te asesoramos al instante.</em></p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Botón Flotante Ir Arriba -->
@@ -167,6 +225,12 @@
           </div>
 
           <div>
+            <!-- DESPLEGABLE DINÁMICO DE VARIANTES -->
+            <div id="cont-variante-modal" class="contenedor-variante">
+              <label id="lbl-variante">Selecciona Opción / Color / Olor:</label>
+              <select id="det-select-variante" class="select-variante"></select>
+            </div>
+
             <div class="selector-cantidad">
               <label>Cantidad:</label>
               <div class="controls-qty">
@@ -209,29 +273,46 @@
         <h4>Datos de Envío</h4>
         <div class="form-group-cart">
           <label>Nombre Completo</label>
-          <input type="text" id="cliente-nombre" placeholder="Ej. Juan Pérez" required>
+          <input type="text" id="cliente-nombre" placeholder="Ej. María López" required>
         </div>
         <div class="form-group-cart">
           <label>Dirección de Envío</label>
-          <input type="text" id="cliente-direccion" placeholder="Ej. Calle 10 # 45 - 20" required>
+          <input type="text" id="cliente-direccion" placeholder="Ej. Calle 10 # 45 - 20, Apto 302" required>
+        </div>
+        <div class="form-group-cart">
+          <label>Zona / Municipio de Envío</label>
+          <select id="cliente-zona-envio" onchange="actualizarCarritoUI()">
+            <option value="Medellín / Valle de Aburrá|10000">Medellín / Envigado / Itagüí ($10.000)</option>
+            <option value="Municipios lejanos Valle de Aburrá|14000">Bello / Caldas / Girardota ($14.000)</option>
+            <option value="Envío Nacional|16000">Envío Nacional Colombia ($16.000)</option>
+            <option value="Acordar con la tienda|0">Acordar envío / Recoger ($0)</option>
+          </select>
         </div>
         <div class="form-group-cart">
           <label>Método de Pago</label>
           <select id="cliente-pago">
-            <option value="Efectivo / Transferencia">Efectivo / Transferencia</option>
             <option value="Nequi / Daviplata">Nequi / Daviplata</option>
+            <option value="Efectivo / Transferencia">Efectivo / Transferencia</option>
             <option value="Pago contra entrega">Pago contra entrega</option>
           </select>
         </div>
         <div class="form-group-cart">
           <label>Notas adicionales (Opcional)</label>
-          <textarea id="cliente-notas" rows="2" placeholder="Ej. Timbrar en el apto 302..."></textarea>
+          <textarea id="cliente-notas" rows="2" placeholder="Ej. Dejar en portería..."></textarea>
         </div>
       </div>
 
       <div class="cart-footer">
+        <div class="cart-subtotal-row">
+          <span>Subtotal productos:</span>
+          <span id="cart-subtotal-precio">$0</span>
+        </div>
+        <div class="cart-subtotal-row">
+          <span>Domicilio / Envío:</span>
+          <span id="cart-envio-precio">$0</span>
+        </div>
         <div class="cart-total">
-          <span>Total:</span>
+          <span>Total a Pagar:</span>
           <span id="cart-total-precio">$0</span>
         </div>
         <button class="btn-pedir-ws" onclick="enviarPedidoWhatsApp()">Pedir por WhatsApp 💬</button>
@@ -240,15 +321,14 @@
   </div>
 
   <script>
-    const NUMERO_WHATSAPP = "573043511345"; // 📱 Número configurado
+    const NUMERO_WHATSAPP = "573043511345";
     
     let productos = [];
     let categorias = ["Rostro", "Cabello", "Corporal", "Maquillaje", "Labios"];
     let categoriaSeleccionada = "Todos";
-    let carrito = [];
+    let carrito = JSON.parse(localStorage.getItem('carrito_tienda_db')) || [];
     let productoDetalleActual = null;
 
-    // EVENTO DE SCROLL PARA MOSTRAR/OCULTAR BOTÓN "IR ARRIBA"
     window.addEventListener('scroll', () => {
       const btnArriba = document.getElementById('btn-ir-arriba');
       if (window.scrollY > 300) {
@@ -278,6 +358,7 @@
 
       renderizarFiltros();
       renderizarTienda();
+      actualizarCarritoUI();
     }
 
     function renderizarFiltros() {
@@ -331,14 +412,20 @@
           `;
 
           prodsDeCat.forEach(p => {
+            const estaAgotado = p.agotado === true;
+            const badgeAgotado = estaAgotado ? `<span class="badge-agotado">Agotado</span>` : '';
+            const btnTexto = estaAgotado ? 'Agotado 🚫' : 'Agregar al Carrito 🛒';
+            const btnClase = estaAgotado ? 'btn-agregar btn-deshabilitado' : 'btn-agregar';
+
             htmlSeccion += `
-              <div class="card" onclick="abrirDetalle(${p.id})">
+              <div class="card ${estaAgotado ? 'agotado-card' : ''}" onclick="abrirDetalle(${p.id})">
+                ${badgeAgotado}
                 <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/250'">
                 <div class="card-body">
                   <div class="card-title">${p.nombre}</div>
                   <div class="card-price">$${Number(p.precio).toLocaleString()}</div>
                   <div class="card-desc">${p.desc || ''}</div>
-                  <button class="btn-agregar" onclick="agregarDirectoAlCarrito(event, ${p.id})">Agregar al Carrito 🛒</button>
+                  <button class="${btnClase}" ${estaAgotado ? 'disabled' : ''} onclick="agregarDirectoAlCarrito(event, ${p.id})">${btnTexto}</button>
                 </div>
               </div>
             `;
@@ -354,7 +441,7 @@
       }
     }
 
-    // MODAL DE DETALLE Y CARRUSEL DE IMÁGENES
+    // MODAL DETALLE PRODUCTO
     function abrirDetalle(id) {
       const producto = productos.find(p => p.id === id);
       if (!producto) return;
@@ -368,6 +455,20 @@
       document.getElementById('det-precio').innerText = `$${Number(producto.precio).toLocaleString()}`;
       document.getElementById('det-desc').innerText = producto.desc || 'Sin descripción disponible.';
       document.getElementById('det-cantidad').value = 1;
+
+      // Cargar Variantes
+      const contVariante = document.getElementById('cont-variante-modal');
+      const selectVariante = document.getElementById('det-select-variante');
+      selectVariante.innerHTML = '';
+
+      if (Array.isArray(producto.variantes) && producto.variantes.length > 0) {
+        producto.variantes.forEach(v => {
+          selectVariante.innerHTML += `<option value="${v}">${v}</option>`;
+        });
+        contVariante.style.display = 'block';
+      } else {
+        contVariante.style.display = 'none';
+      }
 
       // Carrusel de Imágenes
       const galeria = [];
@@ -391,11 +492,22 @@
         });
       }
 
-      document.getElementById('det-btn-agregar').onclick = () => {
-        const cant = parseInt(document.getElementById('det-cantidad').value) || 1;
-        agregarAlCarrito(producto.id, cant);
-        cerrarDetalle();
-      };
+      const btnAgregarModal = document.getElementById('det-btn-agregar');
+      if (producto.agotado === true) {
+        btnAgregarModal.innerText = "Producto Agotado 🚫";
+        btnAgregarModal.disabled = true;
+        btnAgregarModal.className = "btn-agregar btn-deshabilitado";
+      } else {
+        btnAgregarModal.innerText = "Agregar al Carrito 🛒";
+        btnAgregarModal.disabled = false;
+        btnAgregarModal.className = "btn-agregar";
+        btnAgregarModal.onclick = () => {
+          const cant = parseInt(document.getElementById('det-cantidad').value) || 1;
+          const varianteSel = (Array.isArray(producto.variantes) && producto.variantes.length > 0) ? selectVariante.value : null;
+          agregarAlCarrito(producto.id, cant, varianteSel);
+          cerrarDetalle();
+        };
+      }
 
       document.getElementById('modal-detalle-prod').classList.add('activo');
     }
@@ -418,23 +530,35 @@
       document.getElementById('modal-detalle-prod').classList.remove('activo');
     }
 
-    // LÓGICA DEL CARRITO Y CONFIRMACIÓN
-    function agregarDirectoAlCarrito(e, id) {
-      e.stopPropagation();
-      agregarAlCarrito(id, 1);
+    // LÓGICA DEL CARRITO CON LOCALSTORAGE Y CÁLCULO DE ENVÍO
+    function guardarCarritoEnStorage() {
+      localStorage.setItem('carrito_tienda_db', JSON.stringify(carrito));
     }
 
-    function agregarAlCarrito(id, cantidad = 1) {
+    function agregarDirectoAlCarrito(e, id) {
+      e.stopPropagation();
       const producto = productos.find(p => p.id === id);
-      if (!producto) return;
+      if (!producto || producto.agotado === true) return;
 
-      const itemEnCarrito = carrito.find(item => item.id === id);
+      if (Array.isArray(producto.variantes) && producto.variantes.length > 0) {
+        abrirDetalle(id);
+      } else {
+        agregarAlCarrito(id, 1, null);
+      }
+    }
+
+    function agregarAlCarrito(id, cantidad = 1, variante = null) {
+      const producto = productos.find(p => p.id === id);
+      if (!producto || producto.agotado === true) return;
+
+      const itemEnCarrito = carrito.find(item => item.id === id && item.variante === variante);
       if (itemEnCarrito) {
         itemEnCarrito.cantidad += cantidad;
       } else {
-        carrito.push({ ...producto, cantidad });
+        carrito.push({ ...producto, cantidad, variante });
       }
 
+      guardarCarritoEnStorage();
       actualizarCarritoUI();
       abrirConfirmacion();
     }
@@ -452,26 +576,30 @@
       abrirCarrito();
     }
 
-    function cambiarCantidad(id, cambio) {
-      const item = carrito.find(i => i.id === id);
+    function cambiarCantidad(id, variante, cambio) {
+      const item = carrito.find(i => i.id === id && i.variante === variante);
       if (!item) return;
 
       item.cantidad += cambio;
       if (item.cantidad <= 0) {
-        eliminarDelCarrito(id);
+        eliminarDelCarrito(id, variante);
       } else {
+        guardarCarritoEnStorage();
         actualizarCarritoUI();
       }
     }
 
-    function eliminarDelCarrito(id) {
-      carrito = carrito.filter(item => item.id !== id);
+    function eliminarDelCarrito(id, variante) {
+      carrito = carrito.filter(item => !(item.id === id && item.variante === variante));
+      guardarCarritoEnStorage();
       actualizarCarritoUI();
     }
 
     function actualizarCarritoUI() {
       const cartItemsContainer = document.getElementById('cart-items');
       const badge = document.getElementById('cart-badge');
+      const subtotalPrecioEl = document.getElementById('cart-subtotal-precio');
+      const envioPrecioEl = document.getElementById('cart-envio-precio');
       const totalPrecioEl = document.getElementById('cart-total-precio');
 
       const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
@@ -479,35 +607,49 @@
 
       if (carrito.length === 0) {
         cartItemsContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">El carrito está vacío.</p>';
+        subtotalPrecioEl.innerText = '$0';
+        envioPrecioEl.innerText = '$0';
         totalPrecioEl.innerText = '$0';
         return;
       }
 
       cartItemsContainer.innerHTML = '';
-      let total = 0;
+      let subtotal = 0;
 
       carrito.forEach(item => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
+        const itemSubtotal = item.precio * item.cantidad;
+        subtotal += itemSubtotal;
+
+        const varHtml = item.variante ? `<div class="cart-item-variante">Opción: ${item.variante}</div>` : '';
+        const varEscaped = item.variante ? `'${item.variante.replace(/'/g, "\\'")}'` : 'null';
 
         cartItemsContainer.innerHTML += `
           <div class="cart-item">
             <img src="${item.imagen}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/50'">
             <div class="cart-item-info">
               <div class="cart-item-title">${item.nombre}</div>
+              ${varHtml}
               <div class="cart-item-price">$${Number(item.precio).toLocaleString()} c/u</div>
             </div>
             <div class="cart-controls">
-              <button class="btn-qty" onclick="cambiarCantidad(${item.id}, -1)">-</button>
+              <button class="btn-qty" onclick="cambiarCantidad(${item.id}, ${varEscaped}, -1)">-</button>
               <span>${item.cantidad}</span>
-              <button class="btn-qty" onclick="cambiarCantidad(${item.id}, 1)">+</button>
-              <button class="btn-eliminar-item" onclick="eliminarDelCarrito(${item.id})">✕</button>
+              <button class="btn-qty" onclick="cambiarCantidad(${item.id}, ${varEscaped}, 1)">+</button>
+              <button class="btn-eliminar-item" onclick="eliminarDelCarrito(${item.id}, ${varEscaped})">✕</button>
             </div>
           </div>
         `;
       });
 
-      totalPrecioEl.innerText = `$${total.toLocaleString()}`;
+      // Obtener costo de domicilio
+      const selectZona = document.getElementById('cliente-zona-envio').value;
+      const [nombreZona, costoEnvioStr] = selectZona.split('|');
+      const costoEnvio = Number(costoEnvioStr) || 0;
+      const totalFinal = subtotal + costoEnvio;
+
+      subtotalPrecioEl.innerText = `$${subtotal.toLocaleString()}`;
+      envioPrecioEl.innerText = `$${costoEnvio.toLocaleString()}`;
+      totalPrecioEl.innerText = `$${totalFinal.toLocaleString()}`;
     }
 
     function abrirCarrito() {
@@ -526,6 +668,10 @@
 
       const nombre = document.getElementById('cliente-nombre').value.trim();
       const direccion = document.getElementById('cliente-direccion').value.trim();
+      const selectZona = document.getElementById('cliente-zona-envio').value;
+      const [nombreZona, costoEnvioStr] = selectZona.split('|');
+      const costoEnvio = Number(costoEnvioStr) || 0;
+
       const metodoPago = document.getElementById('cliente-pago').value;
       const notas = document.getElementById('cliente-notas').value.trim();
 
@@ -537,20 +683,26 @@
       let mensaje = `¡Hola! Quisiera realizar el siguiente pedido:\n\n`;
       mensaje += `👤 *Cliente:* ${nombre}\n`;
       mensaje += `📍 *Dirección:* ${direccion}\n`;
+      mensaje += `🛵 *Zona Envío:* ${nombreZona}\n`;
       mensaje += `💳 *Método de pago:* ${metodoPago}\n`;
       if (notas) {
         mensaje += `📝 *Notas:* ${notas}\n`;
       }
       mensaje += `\n📦 *Productos:* \n`;
 
-      let total = 0;
+      let subtotal = 0;
       carrito.forEach((item, index) => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
-        mensaje += `${index + 1}. *${item.nombre}* x${item.cantidad} - $${subtotal.toLocaleString()}\n`;
+        const itemSubtotal = item.precio * item.cantidad;
+        subtotal += itemSubtotal;
+        const textoVariante = item.variante ? ` (${item.variante})` : '';
+        mensaje += `${index + 1}. *${item.nombre}*${textoVariante} x${item.cantidad} - $${itemSubtotal.toLocaleString()}\n`;
       });
 
-      mensaje += `\n💰 *Total a pagar:* $${total.toLocaleString()}\n\n¿Me confirman disponibilidad para el envío?`;
+      const totalFinal = subtotal + costoEnvio;
+
+      mensaje += `\n💵 *Subtotal:* $${subtotal.toLocaleString()}\n`;
+      mensaje += `🚚 *Domicilio:* $${costoEnvio.toLocaleString()}\n`;
+      mensaje += `💰 *TOTAL A PAGAR:* $${totalFinal.toLocaleString()}\n\n¿Me confirman disponibilidad para el despacho?`;
 
       const urlWhatsApp = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
       window.open(urlWhatsApp, '_blank');
