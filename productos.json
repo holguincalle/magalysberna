@@ -1,4 +1,8 @@
 {
+  "banner": {
+    "url": "https://bloomshell.co/cdn/shop/files/slider-3_d22861a1-76c5-4b6e-9b82-dac62fc349bb.jpg?v=1788560431&width=1920",
+    "tipo": "imagen"
+  },
   "categorias": [
     "Rostro",
     "Cabello",
@@ -6,23 +10,44 @@
     "Maquillaje",
     "CUIDADO FACIAL",
     "LABIOS",
-    "cuidado capilar"
+    "cuidado capilar",
+    "skincare"
   ],
   "productos": [
     {
       "id": 1791075016395,
       "nombre": "corrector lula negro",
       "categoria": "Corporal",
+      "categorias": [
+        "Corporal"
+      ],
       "precio": 35000,
+      "variantes": [
+        "vainilla",
+        "coco",
+        "fresas"
+      ],
       "imagen": "https://lulabeauty.co/cdn/shop/files/01_10_9578bd34-d67f-4a55-8c42-770659b2ae91.png?v=1736433402&width=3000",
+      "imagenes": [
+        "https://lulabeauty.co/cdn/shop/files/01_10_9578bd34-d67f-4a55-8c42-770659b2ae91.png?v=1736433402&width=3000"
+      ],
       "desc": "descripsao"
     },
     {
       "id": 1791075230117,
       "nombre": "labial",
       "categoria": "Rostro",
+      "categorias": [
+        "Rostro"
+      ],
       "precio": 5612,
+      "agotado": false,
+      "estado": "nuevo",
+      "variantes": [],
       "imagen": "https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000, https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000, https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000 ,https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000",
+      "imagenes": [
+        "https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000, https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000, https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000 ,https://lulabeauty.co/cdn/shop/files/OT_00200825_EC_LULA_AGOSTO06822.jpg?v=1762789837&width=3000"
+      ],
       "desc": "descripcion completa del producto"
     },
     {
@@ -34,6 +59,11 @@
         "LABIOS"
       ],
       "precio": 5000,
+      "variantes": [
+        "coco",
+        "cainilla",
+        "fresas"
+      ],
       "imagen": "https://guzelcosmetics.com/cdn/shop/files/D13BA935-9671-458D-94D4-A33F50A7EF3E.png?v=1781587744&width=1200",
       "imagenes": [
         "https://guzelcosmetics.com/cdn/shop/files/D13BA935-9671-458D-94D4-A33F50A7EF3E.png?v=1781587744&width=1200",
