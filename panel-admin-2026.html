@@ -3,60 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Administración</title>
+  <title>Admin | Magalys Berna</title>
 
   <link rel="icon" href="data:,">
 
   <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-dark: #6d28d9;
+      --primary-light: #f5f3ff;
+      --accent: #a855f7;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.1), 0 2px 4px -1px rgba(124, 58, 237, 0.06);
+      --transition: all 0.3s ease;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-    body { background-color: #f4f6f9; color: #333; padding-bottom: 40px; }
+    body { background-color: var(--bg-body); color: var(--text-main); padding-bottom: 40px; }
     
-    header { background-color: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-    header a { color: #3498db; text-decoration: none; font-weight: bold; }
+    header { background: linear-gradient(135deg, #581c87 0%, #7c3aed 100%); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+    header a { color: #e9d5ff; text-decoration: none; font-weight: bold; transition: var(--transition); }
+    header a:hover { color: #ffffff; }
 
     .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; }
 
-    #pantalla-login { max-width: 400px; margin: 80px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); text-align: center; }
-    #pantalla-login h3 { margin-bottom: 20px; color: #2c3e50; }
-    #pantalla-login input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 1rem; }
-    #pantalla-login button { width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
-    #mensaje-error { color: #e74c3c; font-size: 0.9rem; margin-top: 10px; display: none; }
+    #pantalla-login { max-width: 400px; margin: 80px auto; background: var(--bg-card); padding: 30px; border-radius: 12px; box-shadow: var(--shadow); text-align: center; border: 1px solid var(--border); }
+    #pantalla-login h3 { margin-bottom: 20px; color: var(--primary-dark); }
+    #pantalla-login input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; text-align: center; font-size: 1rem; outline: none; background: var(--bg-body); }
+    #pantalla-login input:focus { border-color: var(--primary); background: white; }
+    #pantalla-login button { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: var(--transition); }
+    #pantalla-login button:hover { background: var(--primary-dark); }
+    #mensaje-error { color: #ef4444; font-size: 0.9rem; margin-top: 10px; display: none; }
 
     #contenido-admin { display: none; }
 
-    .form-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 30px; }
+    .form-container { background: var(--bg-card); padding: 20px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 30px; border: 1px solid var(--border); }
     .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-main); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-body); outline: none; transition: var(--transition); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: white; }
     
-    /* CONTENEDOR CHECKBOX CATEGORÍAS */
-    .checkbox-cat-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background: #fafafa; max-height: 140px; overflow-y: auto; }
-    .checkbox-item { display: flex; align-items: center; gap: 5px; background: white; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; font-size: 0.9rem; }
+    .checkbox-cat-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-body); max-height: 140px; overflow-y: auto; }
+    .checkbox-item { display: flex; align-items: center; gap: 5px; background: var(--bg-card); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 0.9rem; }
     .checkbox-item input { width: auto; }
 
     .row-inline { display: flex; gap: 10px; align-items: center; margin-top: 5px; }
 
-    .btn-guardar { background-color: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-    .btn-cancelar { background-color: #95a5a6; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 10px; }
-    .btn-cerrar { background-color: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-    .btn-secundario { background-color: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn-guardar { background-color: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+    .btn-guardar:hover { background-color: var(--primary-dark); }
+    
+    .btn-cancelar { background-color: var(--text-muted); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 10px; transition: var(--transition); }
+    .btn-cancelar:hover { background-color: #4b5563; }
 
-    .barra-busqueda-admin { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
-    .barra-busqueda-admin input { flex-grow: 1; min-width: 200px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; }
-    .barra-busqueda-admin select { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; background: white; }
+    .btn-cerrar { background-color: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: var(--transition); }
+    .btn-cerrar:hover { background-color: #dc2626; }
 
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background-color: #34495e; color: white; }
-    .img-tabla { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
-    .btn-editar { background-color: #f39c12; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
-    .btn-eliminar { background-color: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
+    .btn-secundario { background-color: var(--primary-light); color: var(--primary-dark); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: var(--transition); }
+    .btn-secundario:hover { background-color: var(--primary); color: white; }
 
-    .badge-cat { background: #e0e0e0; padding: 3px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin: 2px; }
+    .barra-busqueda-admin { background: var(--bg-card); padding: 15px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 15px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; border: 1px solid var(--border); }
+    .barra-busqueda-admin input { flex-grow: 1; min-width: 200px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; background: var(--bg-body); }
+    .barra-busqueda-admin input:focus { border-color: var(--primary); background: white; }
+    .barra-busqueda-admin select { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: var(--bg-body); outline: none; }
 
-    .acciones-json { margin-top: 20px; padding: 20px; background: #e8f4f8; border: 1px solid #bce8f1; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; }
-    .btn-exportar-github { background-color: #27ae60; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1rem; text-align: center; }
-    .btn-json { background-color: #34495e; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background-color: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+    .img-tabla { width: 50px; height: 50px; object-fit: contain; border-radius: 6px; background: #f1f5f9; }
+    
+    .btn-editar { background-color: #f59e0b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: var(--transition); font-weight: 600; }
+    .btn-editar:hover { background-color: #d97706; }
+
+    .btn-eliminar { background-color: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-left: 5px; transition: var(--transition); font-weight: 600; }
+    .btn-eliminar:hover { background-color: #dc2626; }
+
+    .badge-cat { background: var(--primary-light); color: var(--primary-dark); padding: 3px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin: 2px; border: 1px solid rgba(124, 58, 237, 0.2); }
+    .badge-estado-disp { background: #22c55e; color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; }
+    .badge-estado-agot { background: #ef4444; color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; }
+    .badge-estado-nuevo { background: #3b82f6; color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; }
+
+    .acciones-json { margin-top: 25px; padding: 20px; background: var(--primary-light); border: 1px solid rgba(124, 58, 237, 0.2); border-radius: 12px; display: flex; flex-direction: column; gap: 10px; }
+    .acciones-json h4 { color: var(--primary-dark); }
+    .btn-exportar-github { background-color: var(--primary); color: white; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; text-align: center; transition: var(--transition); }
+    .btn-exportar-github:hover { background-color: var(--primary-dark); }
+    .btn-json { background-color: var(--text-main); color: white; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: var(--transition); }
+    .btn-json:hover { background-color: #374151; }
   </style>
 </head>
 <body>
@@ -72,7 +107,7 @@
 
   <div id="contenido-admin">
     <header>
-      <h2>Panel de Administración</h2>
+      <h2>Panel Admin | Magalys Berna</h2>
       <div>
         <a href="index.html" target="_blank" style="margin-right: 15px;">Ver tienda ↗</a>
         <button class="btn-cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
@@ -81,9 +116,26 @@
 
     <div class="container">
       
+      <!-- CONFIGURACIÓN DE PORTADA / BANNER -->
+      <div class="form-container">
+        <h3 style="color: var(--primary-dark); margin-bottom: 12px;">Configurar Portada de la Tienda (Banner)</h3>
+        <div class="form-group">
+          <label>URL de Imagen o Video de Portada</label>
+          <input type="url" id="config-banner-url" placeholder="https://ejemplo.com/banner.jpg o .mp4">
+        </div>
+        <div class="form-group">
+          <label>Tipo de Contenido</label>
+          <select id="config-banner-tipo">
+            <option value="imagen">🖼️ Imagen</option>
+            <option value="video">🎥 Video (.mp4)</option>
+          </select>
+        </div>
+        <button type="button" class="btn-guardar" onclick="guardarBannerConfig()">Guardar Portada</button>
+      </div>
+
       <!-- FORMULARIO DE PRODUCTO -->
       <div class="form-container">
-        <h3 id="form-titulo">Agregar Producto</h3>
+        <h3 id="form-titulo" style="color: var(--primary-dark); margin-bottom: 15px;">Agregar Producto</h3>
         <form id="form-producto" onsubmit="guardarProducto(event)">
           <input type="hidden" id="prod-id">
           
@@ -104,6 +156,22 @@
             <label>Precio ($)</label>
             <input type="number" id="prod-precio" required>
           </div>
+
+          <!-- ESTADO DE DISPONIBILIDAD / NUEVO -->
+          <div class="form-group">
+            <label>Estado del Producto</label>
+            <select id="prod-estado">
+              <option value="disponible">🟢 Disponible</option>
+              <option value="nuevo">✨ Nuevo (Recién Lanzado)</option>
+              <option value="agotado">🔴 Agotado</option>
+            </select>
+          </div>
+
+          <!-- VARIANTES -->
+          <div class="form-group">
+            <label>Variantes / Colores / Olores (Opcional - separados por comas)</label>
+            <input type="text" id="prod-variantes" placeholder="Ej. Fresa, Vainilla, Coco O Rojo 01, Tono 02">
+          </div>
           
           <div class="form-group">
             <label>URL Imagen Principal</label>
@@ -111,7 +179,7 @@
           </div>
 
           <div class="form-group">
-            <label>URLs Imágenes Adicionales para Carrusel (Opcional - separadas por comas)</label>
+            <label>URLs Imágenes Adicionales (Carrusel - separadas por comas)</label>
             <textarea id="prod-imagenes-extra" rows="2" placeholder="https://ejemplo.com/foto2.jpg, https://ejemplo.com/foto3.jpg"></textarea>
           </div>
           
@@ -125,7 +193,7 @@
         </form>
       </div>
 
-      <h3>Inventario de Productos</h3>
+      <h3 style="color: var(--primary-dark); margin-bottom: 12px;">Inventario de Productos</h3>
 
       <!-- BARRA DE BÚSQUEDA Y FILTRADO -->
       <div class="barra-busqueda-admin">
@@ -141,6 +209,7 @@
             <th>Imagen</th>
             <th>Nombre</th>
             <th>Categorías</th>
+            <th>Estado</th>
             <th>Precio</th>
             <th>Acciones</th>
           </tr>
@@ -151,7 +220,7 @@
       <!-- ACCIONES PARA GITHUB -->
       <div class="acciones-json">
         <h4>Sincronización con GitHub Pages</h4>
-        <p style="font-size: 0.9rem; color: #555;">Descarga este archivo y reemplázalo en tu repositorio para publicar los cambios.</p>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Descarga este archivo y reemplázalo en tu repositorio para publicar los cambios.</p>
         <button class="btn-exportar-github" onclick="descargarParaGitHub()">📥 Descargar productos.json actualizado</button>
         
         <div style="display: flex; gap: 10px; margin-top: 10px;">
@@ -170,6 +239,7 @@
 
     let productos = [];
     let categorias = ["Rostro", "Cabello", "Corporal", "Maquillaje", "Labios"];
+    let bannerConfig = { url: "", tipo: "imagen" };
 
     document.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem('admin_autenticado') === 'true') {
@@ -202,13 +272,18 @@
           const data = await respuesta.json();
           productos = data.productos || [];
           categorias = data.categorias || categorias;
+          bannerConfig = data.banner || bannerConfig;
         } else {
           throw new Error();
         }
       } catch (err) {
         productos = JSON.parse(localStorage.getItem('productos_db')) || [];
         categorias = JSON.parse(localStorage.getItem('categorias_db')) || categorias;
+        bannerConfig = JSON.parse(localStorage.getItem('banner_db')) || bannerConfig;
       }
+
+      document.getElementById('config-banner-url').value = bannerConfig.url || '';
+      document.getElementById('config-banner-tipo').value = bannerConfig.tipo || 'imagen';
 
       cargarUICategorias();
       renderizarTabla();
@@ -222,10 +297,17 @@
     function guardarEnStorage() {
       localStorage.setItem('productos_db', JSON.stringify(productos));
       localStorage.setItem('categorias_db', JSON.stringify(categorias));
+      localStorage.setItem('banner_db', JSON.stringify(bannerConfig));
+    }
+
+    function guardarBannerConfig() {
+      bannerConfig.url = document.getElementById('config-banner-url').value.trim();
+      bannerConfig.tipo = document.getElementById('config-banner-tipo').value;
+      guardarEnStorage();
+      alert("¡Portada actualizada localmente!");
     }
 
     function cargarUICategorias() {
-      // 1. Checkboxes en el formulario
       const containerCheckbox = document.getElementById('container-checkbox-cat');
       containerCheckbox.innerHTML = '';
       categorias.forEach(cat => {
@@ -237,7 +319,6 @@
         `;
       });
 
-      // 2. Desplegable de filtro de tabla
       const selectFiltro = document.getElementById('filtrar-cat-admin');
       selectFiltro.innerHTML = '<option value="Todas">Todas las Categorías</option>';
       categorias.forEach(cat => {
@@ -261,18 +342,26 @@
 
     function renderizarTabla(listaProductos = productos) {
       const tbody = document.getElementById('tabla-body');
-      tbody.innerHTML = listaProductos.length === 0 ? '<tr><td colspan="5">No se encontraron productos</td></tr>' : '';
+      tbody.innerHTML = listaProductos.length === 0 ? '<tr><td colspan="6" style="text-align:center; color: var(--text-muted); padding: 20px;">No se encontraron productos</td></tr>' : '';
 
       listaProductos.forEach(p => {
         const catsArray = Array.isArray(p.categorias) ? p.categorias : (p.categoria ? [p.categoria] : ['Sin categoría']);
         const badgesHtml = catsArray.map(c => `<span class="badge-cat">${c}</span>`).join('');
+        
+        let estadoBadge = `<span class="badge-estado-disp">Disponible</span>`;
+        if (p.agotado === true) {
+          estadoBadge = `<span class="badge-estado-agot">Agotado</span>`;
+        } else if (p.estado === 'nuevo') {
+          estadoBadge = `<span class="badge-estado-nuevo">✨ Nuevo</span>`;
+        }
 
         tbody.innerHTML += `
           <tr>
             <td><img src="${p.imagen}" class="img-tabla" onerror="this.src='https://via.placeholder.com/50'"></td>
-            <td>${p.nombre}</td>
+            <td style="font-weight: 600;">${p.nombre}</td>
             <td>${badgesHtml}</td>
-            <td>$${Number(p.precio).toLocaleString()}</td>
+            <td>${estadoBadge}</td>
+            <td style="font-weight: 700; color: var(--primary);">$${Number(p.precio).toLocaleString()}</td>
             <td>
               <button class="btn-editar" onclick="cargarParaEditar(${p.id})">Editar</button>
               <button class="btn-eliminar" onclick="eliminarProducto(${p.id})">Borrar</button>
@@ -301,7 +390,6 @@
       const id = document.getElementById('prod-id').value;
       const nombre = document.getElementById('prod-nombre').value;
       
-      // Obtener todas las categorías seleccionadas
       const seleccionadas = Array.from(document.querySelectorAll('.chk-categoria:checked')).map(cb => cb.value);
       if (seleccionadas.length === 0) {
         alert("Por favor selecciona al menos una categoría.");
@@ -309,11 +397,18 @@
       }
 
       const precio = Number(document.getElementById('prod-precio').value);
+      const estadoSel = document.getElementById('prod-estado').value;
+      const estaAgotado = estadoSel === 'agotado';
+      const variantesTexto = document.getElementById('prod-variantes').value.trim();
       const imagenPrincipal = document.getElementById('prod-imagen').value.trim();
       const extraTexto = document.getElementById('prod-imagenes-extra').value.trim();
       const desc = document.getElementById('prod-desc').value;
 
-      // Procesar array de imágenes para el carrusel
+      let variantes = [];
+      if (variantesTexto) {
+        variantes = variantesTexto.split(',').map(v => v.trim()).filter(v => v.length > 0);
+      }
+
       let listaImagenes = [imagenPrincipal];
       if (extraTexto) {
         const extras = extraTexto.split(',').map(url => url.trim()).filter(url => url.length > 0);
@@ -323,11 +418,14 @@
       const productoData = {
         id: id ? Number(id) : Date.now(),
         nombre,
-        categoria: seleccionadas[0], // Compatibilidad hacia atrás
-        categorias: seleccionadas,   // Array de multicategorías
+        categoria: seleccionadas[0],
+        categorias: seleccionadas,
         precio,
+        agotado: estaAgotado,
+        estado: estadoSel,
+        variantes,
         imagen: imagenPrincipal,
-        imagenes: listaImagenes,      // Array de imágenes para el carrusel
+        imagenes: listaImagenes,
         desc
       };
 
@@ -350,16 +448,26 @@
       document.getElementById('prod-id').value = p.id;
       document.getElementById('prod-nombre').value = p.nombre;
       document.getElementById('prod-precio').value = p.precio;
+      
+      let estadoVal = 'disponible';
+      if (p.agotado === true) estadoVal = 'agotado';
+      else if (p.estado === 'nuevo') estadoVal = 'nuevo';
+      document.getElementById('prod-estado').value = estadoVal;
+
       document.getElementById('prod-imagen').value = p.imagen;
       document.getElementById('prod-desc').value = p.desc || '';
 
-      // Cargar checkboxes
+      if (Array.isArray(p.variantes) && p.variantes.length > 0) {
+        document.getElementById('prod-variantes').value = p.variantes.join(', ');
+      } else {
+        document.getElementById('prod-variantes').value = '';
+      }
+
       const catsArray = Array.isArray(p.categorias) ? p.categorias : [p.categoria];
       document.querySelectorAll('.chk-categoria').forEach(cb => {
         cb.checked = catsArray.includes(cb.value);
       });
 
-      // Cargar imágenes extras en el textarea
       if (Array.isArray(p.imagenes) && p.imagenes.length > 1) {
         const extras = p.imagenes.slice(1);
         document.getElementById('prod-imagenes-extra').value = extras.join(', ');
@@ -383,11 +491,12 @@
       document.getElementById('form-producto').reset();
       document.getElementById('prod-id').value = '';
       document.querySelectorAll('.chk-categoria').forEach(cb => cb.checked = false);
+      document.getElementById('prod-estado').value = 'disponible';
       document.getElementById('form-titulo').innerText = "Agregar Producto";
     }
 
     function descargarParaGitHub() {
-      const data = { categorias, productos };
+      const data = { banner: bannerConfig, categorias, productos };
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
       const anchor = document.createElement('a');
       anchor.setAttribute("href", dataStr);
@@ -406,9 +515,10 @@
           const parsed = JSON.parse(evt.target.result);
           if (Array.isArray(parsed)) {
             productos = parsed;
-          } else if (parsed.productos && parsed.categorias) {
-            productos = parsed.productos;
-            categorias = parsed.categorias;
+          } else {
+            productos = parsed.productos || [];
+            categorias = parsed.categorias || categorias;
+            bannerConfig = parsed.banner || bannerConfig;
           }
           guardarEnStorage();
           cargarUICategorias();
