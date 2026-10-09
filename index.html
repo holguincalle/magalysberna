@@ -28,124 +28,107 @@
       --transition: all 0.3s ease;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
     
-    /* Empujamos todo el cuerpo hacia abajo para que el header fijo de 90px no tape nada */
-    body { background-color: var(--bg-body); color: var(--text-main); padding-top: 90px; padding-bottom: 60px; overflow-x: hidden; }
+    body { background-color: var(--bg-body); color: var(--text-main); padding-top: 145px; padding-bottom: 60px; overflow-x: hidden; }
+    @media (max-width: 768px) {
+      body { padding-top: 135px; }
+    }
     
-    /* ENCABEZADO ORIGINAL MÁS GRANDE */
-    header { 
+    /* CONTENEDOR UNIFICADO FIJO (Encabezado + Búsqueda + Categorías) */
+    .header-wrapper-fixed {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
+      z-index: 1000;
+      background-color: var(--bg-body);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* ENCABEZADO PRINCIPAL */
+    header { 
       background: linear-gradient(135deg, #581c87 0%, #7c3aed 100%);
       color: white; 
-      padding: 1.2rem 2rem; 
-      z-index: 1000;
+      padding: 0.8rem 1.5rem; 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      transition: var(--transition);
-      height: 90px;
-    }
-
-    header.scrolled {
-      height: 50px;
-      padding: 6px 20px;
+      position: relative;
+      height: 70px;
     }
 
     .header-text h1 {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
       line-height: 1.2;
-      transition: var(--transition);
-    }
-
-    header.scrolled .header-text h1 {
-      font-size: 1.1rem;
     }
 
     .header-text p {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       opacity: 0.9;
-      margin-top: 3px;
-      transition: var(--transition);
-    }
-
-    header.scrolled .header-text p {
-      display: none;
+      margin-top: 2px;
     }
 
     .header-cart-btn {
       position: absolute;
-      right: 20px;
+      right: 15px;
       top: 50%;
       transform: translateY(-50%);
       background: rgba(255,255,255,0.2); 
       border: none; 
       color: white; 
-      padding: 8px 14px; 
+      padding: 6px 12px; 
       border-radius: 8px; 
       cursor: pointer; 
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: var(--transition);
     }
     .header-cart-btn:hover {
       background: rgba(255,255,255,0.3);
     }
 
-    /* CONTENEDOR STICKY (Búsqueda y Categorías PEGADO al encabezado) */
+    /* CONTENEDOR DE BÚSQUEDA Y CATEGORÍAS UNIDO */
     .sticky-header-container {
-      position: sticky;
-      top: 90px; /* Coincide con la altura del header inicial */
-      z-index: 900;
       background-color: var(--bg-body);
-      padding: 12px 20px 10px 20px;
-      box-shadow: 0 4px 10px rgba(124, 58, 237, 0.05);
-      transition: top 0.3s ease;
+      padding: 10px 15px;
+      border-bottom: 1px solid var(--border);
     }
 
-    body.scrolled-body .sticky-header-container {
-      top: 50px; /* Se ajusta cuando el header se compacta */
-    }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
     
-    .tienda-busqueda-container { margin-bottom: 8px; }
-    .input-busqueda-tienda { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; box-shadow: 0 2px 4px rgba(0,0,0,0.03); outline: none; background: var(--bg-card); transition: var(--transition); }
+    .tienda-busqueda-container { margin-bottom: 6px; }
+    .input-busqueda-tienda { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; outline: none; background: var(--bg-card); transition: var(--transition); }
     .input-busqueda-tienda:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15); }
 
-    /* CATEGORÍAS APILADAS EN MÓVILES */
+    /* CATEGORÍAS */
     .filtros-categorias { 
       display: flex; 
       flex-wrap: wrap; 
-      gap: 6px; 
-      margin-bottom: 5px; 
+      gap: 5px; 
       justify-content: center;
     }
     
     .btn-cat-filtro { 
       background: var(--bg-card); 
       border: 1px solid var(--border); 
-      padding: 6px 14px; 
+      padding: 5px 12px; 
       border-radius: 20px; 
       font-weight: 600; 
       cursor: pointer; 
       transition: var(--transition); 
       color: var(--text-muted); 
-      font-size: 0.82rem; 
+      font-size: 0.78rem; 
     }
     .btn-cat-filtro.activo, .btn-cat-filtro:hover { background-color: var(--primary); color: white; border-color: var(--primary); }
 
-    /* SECCIÓN BANNER / PORTADA EDITABLE (100% ANCHO Y 70% ALTURA) */
+    /* SECCIÓN BANNER / PORTADA EDITABLE */
     .seccion-banner {
       width: 100vw;
       position: relative;
@@ -153,7 +136,7 @@
       right: 50%;
       margin-left: -50vw;
       margin-right: -50vw;
-      height: 70vh; /* 70% de la altura de la pantalla */
+      height: 70vh;
       min-height: 350px;
       overflow: hidden;
       margin-bottom: 25px;
@@ -289,15 +272,13 @@
       max-width: 520px; 
       border-radius: 12px; 
       padding: 20px; 
-      max-height: 88vh; 
+      max-height: 94vh !important; 
       display: flex; 
       flex-direction: column; 
       box-shadow: 0 10px 30px rgba(0,0,0,0.25); 
-      transition: max-width 0.3s ease;
       overflow-y: auto; 
       scrollbar-width: thin;
     }
-    .cart-modal.paso-2-activo { max-width: 900px; } 
     
     .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; flex-shrink: 0; }
     
@@ -305,19 +286,18 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      position: relative;
     }
 
-    @media (min-width: 768px) {
-      .cart-modal.paso-2-activo .cart-body-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        align-items: start;
-      }
+    .cart-step-productos, .cart-step-formulario {
+      transition: all 0.25s ease-in-out;
     }
+
+    .cart-modal:not(.paso-2-activo) .cart-step-formulario { display: none; }
+    .cart-modal.paso-2-activo .cart-step-productos { display: none; }
 
     .cart-items-container-box {
-      max-height: 240px;
+      max-height: 380px;
       overflow-y: auto;
       padding-right: 4px;
       scrollbar-width: thin;
@@ -336,13 +316,23 @@
     .btn-qty:hover { background: #cbd5e1; }
     .btn-eliminar-item { background: #ef4444; color: white; border: none; padding: 3px 6px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-left: 4px; }
 
-    .cart-cliente-form { display: none; background: var(--bg-body); padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
-    .cart-cliente-form.activo { display: block; }
-    .cart-cliente-form h4 { margin-bottom: 8px; font-size: 0.95rem; color: var(--primary-dark); }
+    .cart-cliente-form { background: var(--bg-body); padding: 14px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; }
+    .cart-cliente-form h4 { margin-bottom: 10px; font-size: 0.95rem; color: var(--primary-dark); display: flex; align-items: center; justify-content: space-between; }
+    
+    .btn-volver-atras { background: none; border: none; color: var(--primary); font-weight: bold; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 4px; }
+    .btn-volver-atras:hover { text-decoration: underline; }
+
     .form-group-cart { margin-bottom: 8px; }
     .form-group-cart label { display: block; font-size: 0.8rem; font-weight: bold; margin-bottom: 2px; color: var(--text-main); }
-    .form-group-cart input, .form-group-cart select, .form-group-cart textarea { width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; background: var(--bg-card); outline: none; }
+    .form-group-cart input, .form-group-cart select, .form-group-cart textarea { width: 100%; padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; background: var(--bg-card); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
     .form-group-cart input:focus, .form-group-cart select:focus, .form-group-cart textarea:focus { border-color: var(--primary); }
+
+    /* CLASE PARA CAMPO VACÍO O CON ERROR EN ROJO */
+    .input-error {
+      border-color: #ef4444 !important;
+      background-color: #fef2f2 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    }
 
     .cart-summary-section {
       background: var(--bg-body);
@@ -358,48 +348,52 @@
     .btn-iniciar-pedido { display: block; width: 100%; background-color: var(--primary); color: white; text-align: center; padding: 11px; border-radius: 8px; font-weight: bold; font-size: 0.95rem; border: none; cursor: pointer; transition: var(--transition); }
     .btn-iniciar-pedido:hover { background-color: var(--primary-dark); }
 
-    .btn-pedir-ws { display: none; width: 100%; background-color: #22c55e; color: white; text-align: center; padding: 11px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.95rem; border: none; cursor: pointer; transition: var(--transition); }
-    .btn-pedir-ws.activo { display: block; }
+    .btn-pedir-ws { display: block; width: 100%; background-color: #22c55e; color: white; text-align: center; padding: 11px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.95rem; border: none; cursor: pointer; transition: var(--transition); }
     .btn-pedir-ws:hover { background-color: #16a34a; }
 
+    /* SECCIÓN CONTACTO / NOSOTROS */
     .seccion-nosotros { background: var(--bg-card); border-radius: 12px; padding: 30px; margin: 40px auto 20px auto; max-width: 1100px; box-shadow: var(--shadow); border: 1px solid var(--border); }
     .nosotros-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
     @media (max-width: 768px) { .nosotros-grid { grid-template-columns: 1fr; } }
     .nosotros-info h3 { color: var(--primary-dark); font-size: 1.4rem; margin-bottom: 12px; }
     .nosotros-info p { color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; font-size: 0.95rem; }
     .nosotros-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--text-main); font-weight: 500; }
+    
+    .btn-contacto-ws { display: inline-flex; align-items: center; gap: 8px; background-color: #22c55e; color: white; padding: 10px 18px; border-radius: 8px; font-weight: bold; text-decoration: none; margin-top: 10px; transition: var(--transition); }
+    .btn-contacto-ws:hover { background-color: #16a34a; transform: translateY(-2px); }
   </style>
 </head>
 <body>
 
-  <!-- 1. ENCABEZADO FIJO -->
-  <header id="mainHeader">
-    <div class="header-text">
-      <h1>Magalys Berna</h1>
-      <p>Cosméticos & Cuidado Personal • Medellín</p>
-    </div>
-    <button class="header-cart-btn" onclick="abrirCarrito()">
-      🛒 <span id="cart-badge" style="font-weight: bold;">0</span>
-    </button>
-  </header>
-
-  <!-- 2. BARRA DE BÚSQUEDA Y CATEGORÍAS APILADAS (PEGADA AL ENCABEZADO) -->
-  <div class="sticky-header-container">
-    <div class="container">
-      <div class="tienda-busqueda-container">
-        <input type="text" id="input-buscar-tienda" class="input-busqueda-tienda" placeholder="🔍 Buscar productos por nombre..." oninput="renderizarTienda()">
+  <!-- ENCABEZADO Y BARRA DE BÚSQUEDA FUSIONADOS EN UN SOLO BLOQUE FIJO -->
+  <div class="header-wrapper-fixed">
+    <header id="mainHeader">
+      <div class="header-text">
+        <h1>Magalys Berna</h1>
+        <p>Cosméticos & Cuidado Personal • Medellín</p>
       </div>
-      <div id="bar-categorias" class="filtros-categorias"></div>
+      <button class="header-cart-btn" onclick="abrirCarrito()">
+        🛒 <span id="cart-badge" style="font-weight: bold;">0</span>
+      </button>
+    </header>
+
+    <div class="sticky-header-container">
+      <div class="container" style="padding: 0;">
+        <div class="tienda-busqueda-container">
+          <input type="text" id="input-buscar-tienda" class="input-busqueda-tienda" placeholder="🔍 Buscar productos por nombre..." oninput="renderizarTienda()">
+        </div>
+        <div id="bar-categorias" class="filtros-categorias"></div>
+      </div>
     </div>
   </div>
 
   <div class="container" style="padding-top: 10px;">
-    <!-- 3. PORTADA / BANNER (100% ANCHO, 70vh DE ALTO, UBICADO DEBAJO DEL BUSCADOR) -->
+    <!-- PORTADA / BANNER -->
     <div id="banner-portada" class="seccion-banner"></div>
 
     <div id="catalogo-contenido">Cargando productos...</div>
 
-    <!-- SECCIÓN LANDING: QUIÉNES SOMOS / UBICACIÓN / ENVÍOS -->
+    <!-- SECCIÓN LANDING CON BOTÓN DE WHATSAPP -->
     <div class="seccion-nosotros">
       <div class="nosotros-grid">
         <div class="nosotros-info">
@@ -408,6 +402,9 @@
           <div class="nosotros-item">📍 <span><strong>Ubicación:</strong> Medellín, Antioquia (Envíos locales y nacionales)</span></div>
           <div class="nosotros-item">📲 <span><strong>Atención WhatsApp:</strong> +57 304 3511345</span></div>
           <div class="nosotros-item">💳 <span><strong>Pagos:</strong> Efectivo, Transferencia o Tarjeta Débito/Crédito</span></div>
+          <a href="https://wa.me/573043511345?text=Hola,%20quisiera%20asesoría%20sobre%20los%20productos%20de%20Magalys%20Berna" target="_blank" class="btn-contacto-ws">
+            💬 Escríbenos por WhatsApp
+          </a>
         </div>
         <div class="nosotros-info">
           <h3>Envíos y Entregas 🛵</h3>
@@ -494,42 +491,8 @@
       </div>
 
       <div class="cart-body-layout">
-        <!-- COLUMNA 1: FORMULARIO CLIENTE -->
-        <div id="cart-cliente-form" class="cart-cliente-form">
-          <h4>Datos de Envío</h4>
-          <div class="form-group-cart">
-            <label>Nombre Completo</label>
-            <input type="text" id="cliente-nombre" placeholder="Ej. María López">
-          </div>
-          <div class="form-group-cart">
-            <label>Dirección de Envío</label>
-            <input type="text" id="cliente-direccion" placeholder="Ej. Calle 10 # 45 - 20, Apto 302">
-          </div>
-          <div class="form-group-cart">
-            <label>Zona / Municipio de Envío</label>
-            <select id="cliente-zona-envio" onchange="actualizarCarritoUI()">
-              <option value="Medellín / Valle de Aburrá|10000">Medellín / Envigado / Itagüí ($10.000)</option>
-              <option value="Municipios lejanos Valle de Aburrá|14000">Bello / Caldas / Girardota ($14.000)</option>
-              <option value="Envío Nacional|16000">Envío Nacional Colombia ($16.000)</option>
-              <option value="Acordar con la tienda|0">Acordar envío / Recoger ($0)</option>
-            </select>
-          </div>
-          <div class="form-group-cart">
-            <label>Método de Pago</label>
-            <select id="cliente-pago">
-              <option value="Efectivo">Efectivo</option>
-              <option value="Transferencia">Transferencia</option>
-              <option value="Tarjeta débito/crédito">Tarjeta débito/crédito</option>
-            </select>
-          </div>
-          <div class="form-group-cart">
-            <label>Notas adicionales (Opcional)</label>
-            <textarea id="cliente-notas" rows="2" placeholder="Ej. Dejar en portería..."></textarea>
-          </div>
-        </div>
-
-        <!-- COLUMNA 2: PRODUCTOS Y TOTALES -->
-        <div style="display: flex; flex-direction: column; width: 100%;">
+        <!-- PASO 1: LISTA DE PRODUCTOS -->
+        <div class="cart-step-productos">
           <div class="cart-items-container-box">
             <div id="cart-items" class="cart-items"></div>
           </div>
@@ -549,8 +512,48 @@
             </div>
             
             <button id="btn-iniciar-pedido" class="btn-iniciar-pedido" onclick="mostrarFormularioCliente()">Hacer Pedido 📝</button>
-            <button id="btn-pedir-ws" class="btn-pedir-ws" onclick="enviarPedidoWhatsApp()">Pedir por WhatsApp 💬</button>
           </div>
+        </div>
+
+        <!-- PASO 2: FORMULARIO Y WHATSAPP -->
+        <div class="cart-step-formulario">
+          <div class="cart-cliente-form">
+            <h4>
+              <span>Datos de Envío</span>
+              <button class="btn-volver-atras" onclick="volverAlPaso1()">⬅️ Volver</button>
+            </h4>
+            <div class="form-group-cart">
+              <label>Nombre Completo</label>
+              <input type="text" id="cliente-nombre" placeholder="Ej. María López" oninput="this.classList.remove('input-error')">
+            </div>
+            <div class="form-group-cart">
+              <label>Dirección de Envío</label>
+              <input type="text" id="cliente-direccion" placeholder="Ej. Calle 10 # 45 - 20, Apto 302" oninput="this.classList.remove('input-error')">
+            </div>
+            <div class="form-group-cart">
+              <label>Zona / Municipio de Envío</label>
+              <select id="cliente-zona-envio" onchange="actualizarCarritoUI()">
+                <option value="Medellín / Valle de Aburrá|10000">Medellín / Envigado / Itagüí ($10.000)</option>
+                <option value="Municipios lejanos Valle de Aburrá|14000">Bello / Caldas / Girardota ($14.000)</option>
+                <option value="Envío Nacional|16000">Envío Nacional Colombia ($16.000)</option>
+                <option value="Acordar con la tienda|0">Acordar envío / Recoger ($0)</option>
+              </select>
+            </div>
+            <div class="form-group-cart">
+              <label>Método de Pago</label>
+              <select id="cliente-pago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Tarjeta débito/crédito">Tarjeta débito/crédito</option>
+              </select>
+            </div>
+            <div class="form-group-cart">
+              <label>Notas adicionales (Opcional)</label>
+              <textarea id="cliente-notas" rows="2" placeholder="Ej. Dejar en portería..."></textarea>
+            </div>
+          </div>
+
+          <button id="btn-pedir-ws" class="btn-pedir-ws" onclick="enviarPedidoWhatsApp()">Pedir por WhatsApp 💬</button>
         </div>
       </div>
     </div>
@@ -573,17 +576,7 @@
     let productoDetalleActual = null;
 
     window.addEventListener('scroll', () => {
-      const header = document.getElementById('mainHeader');
       const btnArriba = document.getElementById('btn-ir-arriba');
-      
-      if (window.scrollY > 30) {
-        header.classList.add('scrolled');
-        document.body.classList.add('scrolled-body');
-      } else {
-        header.classList.remove('scrolled');
-        document.body.classList.remove('scrolled-body');
-      }
-
       if (window.scrollY > 300) {
         btnArriba.classList.add('visible');
       } else {
@@ -651,6 +644,10 @@
       categoriaSeleccionada = cat;
       renderizarFiltros();
       renderizarTienda();
+
+      const bannerEl = document.getElementById('banner-portada');
+      const targetScroll = (bannerEl && bannerEl.classList.contains('activo')) ? bannerEl.offsetTop + bannerEl.offsetHeight - 140 : 100;
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
     }
 
     function renderizarTienda() {
@@ -913,7 +910,7 @@
         const itemSubtotal = item.precio * item.cantidad;
         subtotal += itemSubtotal;
 
-        const varHtml = item.variante ? `<div class="cart-item-variante">Opción: ${item.variante}</div>` : '';
+        const varHtml = item.variante ? `<div class="cart-item-variante">Opción: ${item.itemvariante || item.variante}</div>` : '';
         const varEscaped = item.variante ? `'${item.variante.replace(/'/g, "\\'")}'` : 'null';
 
         cartItemsContainer.innerHTML += `
@@ -945,10 +942,7 @@
     }
 
     function abrirCarrito() {
-      document.getElementById('cart-cliente-form').classList.remove('activo');
-      document.getElementById('cartModalBox').classList.remove('paso-2-activo');
-      document.getElementById('btn-iniciar-pedido').style.display = 'block';
-      document.getElementById('btn-pedir-ws').classList.remove('activo');
+      volverAlPaso1();
       document.getElementById('modal-carrito').classList.add('activo');
     }
 
@@ -961,13 +955,15 @@
         alert("Tu carrito está vacío.");
         return;
       }
-      document.getElementById('cart-cliente-form').classList.add('activo');
       document.getElementById('cartModalBox').classList.add('paso-2-activo');
-      document.getElementById('btn-iniciar-pedido').style.display = 'none';
-      document.getElementById('btn-pedir-ws').classList.add('activo');
-
       const modal = document.getElementById('cartModalBox');
-      modal.scrollTo({ top: modal.scrollHeight, behavior: 'smooth' });
+      modal.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function volverAlPaso1() {
+      document.getElementById('cartModalBox').classList.remove('paso-2-activo');
+      const modal = document.getElementById('cartModalBox');
+      modal.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function enviarPedidoWhatsApp() {
@@ -976,19 +972,41 @@
         return;
       }
 
-      const nombre = document.getElementById('cliente-nombre').value.trim();
-      const direccion = document.getElementById('cliente-direccion').value.trim();
+      const inputNombre = document.getElementById('cliente-nombre');
+      const inputDireccion = document.getElementById('cliente-direccion');
+      
+      const nombre = inputNombre.value.trim();
+      const direccion = inputDireccion.value.trim();
+
+      // Validación visual con bordes rojos si faltan datos
+      let hayError = false;
+
+      if (!nombre) {
+        inputNombre.classList.add('input-error');
+        inputNombre.focus();
+        hayError = true;
+      } else {
+        inputNombre.classList.remove('input-error');
+      }
+
+      if (!direccion) {
+        inputDireccion.classList.add('input-error');
+        if (!hayError) inputDireccion.focus(); // Enfoca el primero que falte
+        hayError = true;
+      } else {
+        inputDireccion.classList.remove('input-error');
+      }
+
+      if (hayError) {
+        return; // Detiene el envío si hay campos vacíos
+      }
+
       const selectZona = document.getElementById('cliente-zona-envio').value;
       const [nombreZona, costoEnvioStr] = selectZona.split('|');
       const costoEnvio = Number(costoEnvioStr) || 0;
 
       const metodoPago = document.getElementById('cliente-pago').value;
       const notas = document.getElementById('cliente-notas').value.trim();
-
-      if (!nombre || !direccion) {
-        alert("Por favor completa tu Nombre y Dirección antes de enviar el pedido.");
-        return;
-      }
 
       let mensaje = `*¡Hola Magalys Berna! Nuevo Pedido 🛍️*\n\n`;
       mensaje += `👤 *Cliente:* ${nombre}\n`;
